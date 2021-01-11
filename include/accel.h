@@ -26,9 +26,9 @@
 /* Reciprocal of ACCEL_DZ */
 #define ACCEL_RDZ 0.5
 /* Stepsize in Fourier F-dot-dot */
-#define ACCEL_DW 20
+#define ACCEL_DW 8
 /* Reciprocal of ACCEL_DW */
-#define ACCEL_RDW 0.05
+#define ACCEL_RDW 0.125
 /* Closest candidates we will accept as independent */
 #define ACCEL_CLOSEST_R 15.0
 /* Padding for .dat file reading so that we don't SEGFAULT */
