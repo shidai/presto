@@ -1,0 +1,281 @@
+    bins_needed = (int) ceil(obs->corr_uselen * harm_fract) + 2;
+        shi->rinds = (unsigned short *) malloc(obs->corr_uselen * sizeof(unsigned short));
+        shi->zinds = (unsigned short *) malloc(obs->corr_uselen * sizeof(unsigned short));
+        fftlen = obs->fftlen;
+    shis = (subharminfo **) malloc(obs->numharmstages * sizeof(subharminfo *));
+    init_subharminfo(1, 1, (int) obs->zhi, (int) obs->whi, &shis[0][0], obs);
+    fftlen = obs->fftlen;
+    if (obs->numw)
+    if (!obs->inmem) {
+        for (ii = 1; ii < obs->numharmstages; ii++) {
+                init_subharminfo(harmtosum, jj, (int) obs->zhi,
+                                 (int) obs->whi, &shis[ii][jj - 1], obs);
+                fftlen = calc_fftlen(harmtosum, jj, (int) obs->zhi, (int) obs->whi, obs);
+                if (obs->numw)
+    if (!obs->inmem) {
+        for (ii = 1; ii < obs->numharmstages; ii++) {
+    if (obs->use_harmonic_polishing &&
+        (obs->mmap_file || obs->dat_input)) {
+        if (obs->numw) {
+            max_rzw_arr_harmonics(obs->fft, obs->numbins,
+                                  cand->r - obs->lobin,
+            max_rz_arr_harmonics(obs->fft, obs->numbins,
+                                 cand->r - obs->lobin,
+            cand->hirs[ii] = (r + obs->lobin) * (ii + 1);
+            cand->hiws[ii] = obs->numw ? w * (ii + 1) : 0.0;
+            if (obs->mmap_file || obs->dat_input) {
+                if (obs->numw)
+                    cand->pows[ii] = max_rzw_arr(obs->fft,
+                                                 obs->numbins,
+                                                 cand->r * (ii + 1) - obs->lobin,
+                    cand->pows[ii] = max_rz_arr(obs->fft,
+                                                obs->numbins,
+                                                cand->r * (ii + 1) - obs->lobin,
+                if (obs->numw)
+                    cand->pows[ii] = max_rzw_file(obs->fftfile,
+                                                  cand->r * (ii + 1) - obs->lobin,
+                    cand->pows[ii] = max_rz_file(obs->fftfile,
+                                                 cand->r * (ii + 1) - obs->lobin,
+            cand->hirs[ii] += obs->lobin;
+                                  obs->numindep[twon_to_index(cand->numharm)]);
+    if (!obs->dat_input)
+        fclose(obs->workfile);  /* Why is this here? -A */
+    obs->workfile = chkfopen(obs->accelnm, "w");
+        if (obs->numw==0 && ii==10) { // Skip jerk parts
+            fprintf(obs->workfile, "%s  ", ctrstr);
+    fprintf(obs->workfile, "%s\n", ctrstr);
+        if (obs->numw==0 && ii==10) { // Skip jerk parts
+            fprintf(obs->workfile, "%s  ", ctrstr);
+    fprintf(obs->workfile, "%s\n", ctrstr);
+        if (obs->numw==0 && ii==10) { // Skip jerk parts
+            fprintf(obs->workfile, "%s--", tmpstr);
+    fprintf(obs->workfile, "%s\n", tmpstr);
+        calc_rzwerrs(props + ii, obs->T, &errs);
+                if (obs->nph > 0.0)
+                    amp = sqrt(harm.pow / obs->nph);
+        fprintf(obs->workfile, "%s  ", ctrstr);
+        fprintf(obs->workfile, "%s  ", ctrstr);
+        fprintf(obs->workfile, "%s  ", ctrstr);
+        fprintf(obs->workfile, "%s  ", ctrstr);
+        fprintf(obs->workfile, "%s  ", ctrstr);
+        write_val_with_err(obs->workfile, errs.p * 1000.0, errs.perr * 1000.0,
+        write_val_with_err(obs->workfile, errs.f, errs.ferr, *error++, *width++);
+        write_val_with_err(obs->workfile, props[ii].r, props[ii].rerr,
+        write_val_with_err(obs->workfile, errs.fd, errs.fderr, *error++, *width++);
+        write_val_with_err(obs->workfile, props[ii].z, props[ii].zerr,
+        if (obs->numw) {
+            write_val_with_err(obs->workfile, props[ii].w, props[ii].werr,
+        accel = props[ii].z * SOL / (obs->T * obs->T * errs.f);
+        accelerr = props[ii].zerr * SOL / (obs->T * obs->T * errs.f);
+        write_val_with_err(obs->workfile, accel, accelerr, *error++, *width++);
+        fprintf(obs->workfile, "  %.20s\n", notes + ii * 20);
+        fflush(obs->workfile);
+    fprintf(obs->workfile, "\n\n");
+        if (obs->numw==0 && (ii==9 || ii==10)) { // Skip jerk parts
+            fprintf(obs->workfile, "%s  ", ctrstr);
+    fprintf(obs->workfile, "%s\n", ctrstr);
+        if (obs->numw==0 && (ii==9 || ii==10)) { // Skip jerk parts
+            if (obs->nph > 0.0 && ii == 3)  /*  HAAACK!!! */
+            fprintf(obs->workfile, "%s  ", ctrstr);
+    fprintf(obs->workfile, "%s\n", ctrstr);
+        if (obs->numw==0 && (ii==9 || ii==10)) { // Skip jerk parts
+            fprintf(obs->workfile, "%s--", tmpstr);
+    fprintf(obs->workfile, "%s\n", tmpstr);
+            if (obs->nph > 0.0) {
+                cand->derivs[jj].locpow = obs->nph;
+            calc_rzwerrs(&props, obs->T, &errs);
+            fprintf(obs->workfile, "%s  ", ctrstr);
+            fprintf(obs->workfile, "%s  ", ctrstr);
+            fprintf(obs->workfile, "%s  ", ctrstr);
+            write_val_with_err(obs->workfile, props.pow, props.powerr,
+            fprintf(obs->workfile, "%s  ", ctrstr);
+            write_val_with_err(obs->workfile, props.r, props.rerr,
+            fprintf(obs->workfile, "%s  ", ctrstr);
+            write_val_with_err(obs->workfile, props.z, props.zerr,
+            fprintf(obs->workfile, "%s  ", ctrstr);
+            if (obs->numw) {
+                write_val_with_err(obs->workfile, props.w, props.werr,
+                fprintf(obs->workfile, "%s  ", ctrstr);
+            write_val_with_err(obs->workfile, props.phs, props.phserr,
+            write_val_with_err(obs->workfile, props.cen, props.cenerr,
+            write_val_with_err(obs->workfile, props.pur, props.purerr,
+            fprintf(obs->workfile, "  %.20s\n", notes);
+            fflush(obs->workfile);
+    fprintf(obs->workfile, "\n\n");
+    fclose(obs->workfile);
+    command = malloc(strlen(obs->rootfilenm) + strlen(obs->accelnm) + 20);
+    sprintf(command, "cat %s.inf >> %s", obs->rootfilenm, obs->accelnm);
+    if (obs->mmap_file || obs->dat_input) {
+        if (lobin - obs->lobin < 0) {
+            offset = llabs(lobin - obs->lobin);
+        firstbin = (lobin - obs->lobin) + offset;
+        if (firstbin + newnumbins > obs->numbins) {
+            long long numpad = firstbin + newnumbins - obs->numbins;
+        memcpy(tmpdata + offset, obs->fft + firstbin, sizeof(fcomplex) * newnumbins);
+        return read_fcomplex_file(obs->fftfile, lobin - obs->lobin, numbins);
+    ffdot->zlo = calc_required_z(harm_fract, obs->zlo);
+    ffdot->wlo = calc_required_w(harm_fract, obs->wlo);
+    if (numharm > 1 && !obs->inmem) {
+        for (ii = 0; ii < obs->corr_uselen; ii++) {
+        for (ii = 0; ii < obs->numz; ii++) {
+            zz = obs->zlo + ii * ACCEL_DZ;
+        ffdot->numrs = obs->corr_uselen;
+    if (!obs->mmap_file && !obs->dat_input && 0)
+    if (obs->nph > 0.0) {
+        double norm = 1.0 / sqrt(obs->nph);
+    } else if (obs->norm_type == 0) {
+    long long rlen = (obs->highestbin + obs->corr_uselen) * ACCEL_RDR;
+        outpow = obs->ffdotplane + offset + ffd->rlo * ACCEL_RDR;
+    float *outpow = obs->ffdotplane + ffd->rlo * ACCEL_RDR * ffd->numzs;
+        const long long rlen = (obs->highestbin + obs->corr_uselen) * ACCEL_RDR;
+        float *fdp = obs->ffdotplane;
+        float *fdp = obs->ffdotplane;
+    powcut = obs->powcut[twon_to_index(numharm)];
+    numindep = obs->numindep[twon_to_index(numharm)];
+                    if (added && !obs->dat_input)
+                        fprintf(obs->workfile,
+                                pow, sig, numharm, rr, rr / obs->T, zz, ww);
+        hassuffix = split_root_suffix(cmd->argv[0], &(obs->rootfilenm), &suffix);
+                obs->dat_input = 1;
+                obs->mmap_file = 0;
+                obs->dat_input = 0;
+        obs->use_harmonic_polishing = 0;
+        obs->use_harmonic_polishing = 1;        // now default
+    readinf(idata, obs->rootfilenm);
+    if (obs->dat_input) {
+        obs->fftfile = NULL;
+        obs->fft = (fcomplex *) ftmp;
+        obs->numbins = filelen / 2;
+        deredden(obs->fft, obs->numbins);
+    if (!obs->dat_input) {
+        obs->fftfile = chkfopen(cmd->argv[0], "rb");
+        obs->numbins = chkfilelen(obs->fftfile, sizeof(fcomplex));
+            fclose(obs->fftfile);
+            obs->fftfile = NULL;
+            obs->mmap_file = open(cmd->argv[0], O_RDONLY);
+            if (obs->mmap_file == -1) {
+            obs->fft =
+                (fcomplex *) mmap(0, sizeof(fcomplex) * obs->numbins, PROT_READ,
+                                  MAP_SHARED, obs->mmap_file, 0);
+            if (obs->fft == MAP_FAILED) {
+                obs->fftfile = chkfopen(cmd->argv[0], "rb");
+                obs->mmap_file = 0;
+            obs->mmap_file = 0;
+    obs->N = (long long) idata->N;
+        if (obs->mmap_file || obs->dat_input) {
+            obs->nph = obs->fft[0].r;
+            obs->nph = get_numphotons(obs->fftfile);
+        printf("Normalizing powers using %.0f photons.\n\n", obs->nph);
+        obs->nph = 0.0;
+            obs->norm_type = 1;
+            obs->norm_type = 0;
+            obs->norm_type = 0;
+        if (obs->dat_input) {
+            obs->fft[0].r = 1.0;
+            obs->fft[0].i = 1.0;
+    obs->lobin = cmd->lobin;
+    if (obs->lobin > 0) {
+        obs->nph = 0.0;
+        if (cmd->lobin > obs->numbins - 1) {
+    obs->numharmstages = twon_to_index(cmd->numharm) + 1;
+    obs->dz = ACCEL_DZ;
+    obs->numz = (cmd->zmax / ACCEL_DZ) * 2 + 1;
+        obs->whi = cmd->wmax;
+        obs->wlo = -cmd->wmax;
+        obs->dw = ACCEL_DW;
+        obs->numw = (cmd->wmax / ACCEL_DW) * 2 + 1;
+            obs->numw = 0;
+        obs->whi = 0.0;
+        obs->wlo = 0.0;
+        obs->dw = 0.0;
+        obs->numw = 0;
+    rootlen = strlen(obs->rootfilenm) + 45;
+    obs->candnm = (char *) calloc(rootlen, 1);
+    obs->accelnm = (char *) calloc(rootlen, 1);
+    obs->workfilenm = (char *) calloc(rootlen, 1);
+    if (obs->numw) {
+        sprintf(obs->candnm, "%s_ACCEL_%d_JERK_%d.cand", obs->rootfilenm, cmd->zmax, cmd->wmax);
+        sprintf(obs->accelnm, "%s_ACCEL_%d_JERK_%d", obs->rootfilenm, cmd->zmax, cmd->wmax);
+        sprintf(obs->workfilenm, "%s_ACCEL_%d_JERK_%d.txtcand", obs->rootfilenm, cmd->zmax, cmd->wmax);
+        sprintf(obs->candnm, "%s_ACCEL_%d.cand", obs->rootfilenm, cmd->zmax);
+        sprintf(obs->accelnm, "%s_ACCEL_%d", obs->rootfilenm, cmd->zmax);
+        sprintf(obs->workfilenm, "%s_ACCEL_%d.txtcand", obs->rootfilenm, cmd->zmax);
+    if (!obs->dat_input)
+        obs->workfile = chkfopen(obs->workfilenm, "w");
+    obs->numbetween = ACCEL_NUMBETWEEN;
+    obs->dt = idata->dt;
+    obs->T = idata->dt * idata->N;
+        obs->rlo = floor(cmd->flo * obs->T);
+        if (obs->rlo < obs->lobin)
+            obs->rlo = obs->lobin;
+        if (obs->rlo > obs->numbins - 1) {
+            obs->rlo = cmd->rlo;
+            obs->rlo = 1.0;
+        if (obs->rlo < obs->lobin)
+            obs->rlo = obs->lobin;
+        if (obs->rlo > obs->numbins - 1) {
+    obs->highestbin = obs->numbins - 1;
+        obs->highestbin = ceil(cmd->fhi * obs->T);
+        if (obs->highestbin > obs->numbins - 1)
+            obs->highestbin = obs->numbins - 1;
+        obs->rhi = obs->highestbin;
+        if (obs->highestbin < obs->rlo) {
+        obs->highestbin = cmd->rhi;
+        if (obs->highestbin > obs->numbins - 1)
+            obs->highestbin = obs->numbins - 1;
+        obs->rhi = obs->highestbin;
+        if (obs->highestbin < obs->rlo) {
+    obs->dr = ACCEL_DR;
+    obs->zhi = cmd->zmax;
+    obs->zlo = -cmd->zmax;
+    obs->sigma = cmd->sigma;
+    obs->powcut = (float *) malloc(obs->numharmstages * sizeof(float));
+    obs->numindep = (long long *) malloc(obs->numharmstages * sizeof(long long));
+    for (ii = 0; ii < obs->numharmstages; ii++) {
+        if (obs->numz == 1 && obs->numw == 0)
+            obs->numindep[ii] = (obs->rhi - obs->rlo) / index_to_twon(ii);
+        else if (obs->numz > 1 && obs->numw == 0)
+            obs->numindep[ii] = (obs->rhi - obs->rlo) * (obs->numz + 1) *
+                (obs->dz / 6.95) / index_to_twon(ii);
+            obs->numindep[ii] = (obs->rhi - obs->rlo) * \
+                (obs->numz + 1) * (obs->dz / 6.95) *        \
+                (obs->numw + 1) * (obs->dw / 44.2) / index_to_twon(ii);
+        obs->powcut[ii] = power_for_sigma(obs->sigma,
+                                          index_to_twon(ii), obs->numindep[ii]);
+    obs->numzap = 0;
+       obs->numzap = get_birdies(cmd->zapfile, obs->T, obs->baryv, 
+       &(obs->lobins), &(obs->hibins));
+       obs->numzap = 0;
+    obs->maxkernlen = 2 * ACCEL_NUMBETWEEN * w_resp_halfwidth(obs->zhi, obs->whi, LOWACC);
+    obs->fftlen = fftlen_from_kernwidth(obs->maxkernlen);
+    if (obs->fftlen < 2048)
+        obs->fftlen = 2048;  // This gives slightly better speed empirically
+    obs->corr_uselen = obs->fftlen - obs->maxkernlen;
+    // Make sure that obs->corr_uselen is an integer number of
+    if (obs->corr_uselen % ACCEL_RDR)
+        obs->corr_uselen = obs->corr_uselen / ACCEL_RDR * ACCEL_RDR;
+        // Need the extra obs->corr_uselen since we generate the plane in blocks
+            memuse = sizeof(float) * (obs->highestbin + obs->corr_uselen)
+                * obs->numbetween * obs->numz * obs->numw;
+            memuse = sizeof(float) * (obs->highestbin + obs->corr_uselen)
+                * obs->numbetween * obs->numz;
+            obs->inmem = 1;
+            obs->ffdotplane = gen_fvect(memuse / sizeof(float));
+            obs->inmem = 0;
+            obs->ffdotplane = NULL;
+    if (obs->mmap_file)
+        close(obs->mmap_file);
+    else if (obs->dat_input)
+        free(obs->fft - ACCEL_PADDING / 2);
+        fclose(obs->fftfile);
+    free(obs->powcut);
+    free(obs->numindep);
+    free(obs->rootfilenm);
+    free(obs->candnm);
+    free(obs->accelnm);
+    free(obs->workfilenm);
+    if (obs->numzap) {
+        free(obs->lobins);
+        free(obs->hibins);
+    if (obs->inmem) {
+        vect_free(obs->ffdotplane);
